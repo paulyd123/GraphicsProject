@@ -9,17 +9,16 @@
     </style>
 </head>
 <body>
-
+//Canvas width and height
 <canvas id="myCanvas" width="500" height="400"></canvas>
 
 <script>
-	// JavaScript code goes here
+    
+    //Storing a reference to the canvas element to the canvas variable
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     
-  
-
-    
+    //This function prints out the square on the canvas
     function draw() {
         ctx.beginPath();
         ctx.arc(x, y, 10, 0, Math.PI*2);
@@ -27,21 +26,22 @@
         ctx.fill();
         ctx.closePath();
     }
-    setInterval(draw, 10);
+    setInterval(draw, 10); //Ball moving at 10 milliseconds
     
+    //Using 'stroke' instead of 'fill' to show the outer stroke of the blocks 
     ctx.beginPath();
     ctx.arc(240, 140, 10, 0, Math.PI*2, false);
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
     
+    //Path of ball
     ctx.beginPath();
     ctx.rect(100, 10, 100, 40);
     ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
     ctx.stroke();
     ctx.closePath();
     
-
 </script>
 
 </body>
