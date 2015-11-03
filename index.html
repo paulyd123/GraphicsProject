@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Canvas</title>
+    <style type="text/css">
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #FF0000; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="500" height="400"></canvas>
+
+<script>
+	// JavaScript code goes here
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    
+  
+
+    
+    function draw() {
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI*2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+    setInterval(draw, 10);
+    
+    ctx.beginPath();
+    ctx.arc(240, 140, 10, 0, Math.PI*2, false);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+    
+    ctx.beginPath();
+    ctx.rect(100, 10, 100, 40);
+    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+    ctx.stroke();
+    ctx.closePath();
+    
+
+</script>
+
+</body>
+</html>
