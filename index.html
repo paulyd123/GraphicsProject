@@ -28,13 +28,14 @@
     }
     setInterval(draw, 10); //Ball moving at 10 milliseconds
     
-    //Using 'stroke' instead of 'fill' to show the outer stroke of the blocks 
+    //ball
     ctx.beginPath();
     ctx.arc(240, 140, 10, 0, Math.PI*2, false);
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
     
+    //Using 'stroke' instead of 'fill' to show the outer stroke of the blocks 
     //Path of ball
     ctx.beginPath();
     ctx.rect(100, 10, 100, 40);
