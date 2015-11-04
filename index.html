@@ -4,43 +4,78 @@
     <meta charset="UTF-8" />
     <title>Canvas</title>
     <style type="text/css">
-    	* { padding: 0; margin: 0; }
+    	 { padding: 0; margin: 0; }
     	canvas { background: #FF0000; display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
-
-<canvas id="myCanvas" width="500" height="400"></canvas>
+ 
+    
+<canvas id="myCanvas" width="500" height="400"></canvas> 
 
 <script>
-	// JavaScript code goes here
+	//This stores a reference to the canvas element and to the canvas variable
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     
-  
-
+    //Variables
+    var x = canvas.width/2; //Defining x position
+    var y = canvas.height-30; //Defining y position
+    var a = 1; //var a and var b are used to show the ball is moving
+    var b = -1;
+    var radiusOfBall = 12; //Setting radius of ball
+    var heightOfPaddle = 10; //Setting height of paddle
+    var widthOfPaddle = 80; //Setting width of paddle
+    var paddleX = (canvas.width-widthOfPaddle)/2;
+    var pressRight = false;
+    var pressLeft = false;
     
-    function draw() {
+    //Draw ball function
+    function drawBall() {
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI*2);
+        ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
     }
-    setInterval(draw, 10);
     
+    //Function drawing the paddle
+    function drawPaddle() {
     ctx.beginPath();
-    ctx.arc(240, 140, 10, 0, Math.PI*2, false);
-    ctx.fillStyle = "white";
+    ctx.rect(paddleX, canvas.height-heightOfPaddle, widthOfPaddle, heightOfPaddle);
+    ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
+    }   
     
-    ctx.beginPath();
-    ctx.rect(100, 10, 100, 40);
-    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    ctx.stroke();
-    ctx.closePath();
+    //This is the draw function drawing the ball and the paddle
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); //This clears the canvas
+        drawBall();
+        drawPaddle();
     
+        
+   //Here I am trying to get the ball to hit off the walls of the canvas
+   if(x + a < 0) {
+       a = -a;
+    }
+    else if(x + dy > canvas.width - radiusOfBall) {
+        a = -a;
+    }
+        
+    if(y + b < 0) {
+        b = -b;
+    }
+    else if(y + dy > canvas.height - radiusOfBall) {
+        b = -b;
+    }   
+        
+        x += a; //This places the ball in a new position every time the game updates
+        y += b;
+    }
+    
+    
+    setInterval(draw, 10); //Ball moving at 10 milliseconds
 
 </script>
 
