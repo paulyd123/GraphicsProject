@@ -4,107 +4,125 @@
     <meta charset="UTF-8" />
     <title>Canvas</title>
     <style type="text/css">
-    	 { padding: 0; margin: 0; }
+    	* { padding: 0; margin: 0; }
     	canvas { background: #FF0000; display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
- 
     
-<canvas id="myCanvas" width="500" height="400"></canvas> 
+<canvas id="myCanvas" width="1000" height="400"></canvas>
 
 <script>
-<<<<<<< HEAD
-	//This stores a reference to the canvas element and to the canvas variable
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
     
-    //Variables
-    var x = canvas.width/2; //Defining x position
-    var y = canvas.height-30; //Defining y position
-    var a = 1; //var a and var b are used to show the ball is moving
-    var b = -1;
-    var radiusOfBall = 12; //Setting radius of ball
-    var heightOfPaddle = 10; //Setting height of paddle
-    var widthOfPaddle = 80; //Setting width of paddle
-    var paddleX = (canvas.width-widthOfPaddle)/2;
-    var pressRight = false;
-    var pressLeft = false;
+//This stores a reference to the canvas element and to the canvas variable
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+//Variables
+var radiusOfBall = 11; //Radius of ball
+var x = canvas.width/2; //Defining x position
+var y = canvas.height-30; //Defining y position
+var a = 3; //var a and var b are used to show the ball is moving
+var b = -3;
+var heightOfPaddle = 10; //Setting height of paddle
+var widthOfPaddle = 120; //Setting width of paddle
+var paddleX = (canvas.width-widthOfPaddle)/2; //Making sure paddle starts in middle
+var pressRight = false; //Left keyboard button initialized
+var pressLeft = false; //Right keyboard button initialized
+//var pressUp = false;
+//var pressDown = false;
+
+//Event listeners set up to listen for key presses
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+ //   document.addEventListener("keypress", keypressHandler, false);
     
-    //Draw ball function
-    function drawBall() {
-=======
     
-    //Storing a reference to the canvas element to the canvas variable
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    
-    //This function prints out the square on the canvas
-    function draw() {
->>>>>>> a54d7bdc48dcfded9b9be1df4299db544a2365f8
-        ctx.beginPath();
-        ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
+//Operates keyDownHandler when button is pressed
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        pressRight = true;
     }
-<<<<<<< HEAD
+    else if(e.keyCode == 37) {
+        pressLeft = true;
+    }
+}
     
-    //Function drawing the paddle
-    function drawPaddle() {
-=======
-    setInterval(draw, 10); //Ball moving at 10 milliseconds
+  //  function keyDownHandler(e) {
+ //   if(e.keyCode == 38) {
+   //     pressUp = true;
+   // }
+  //  else if(e.keyCode == 40) {
+  //      pressDown = true;
+  //  }
+//}
     
-    //ball
->>>>>>> a54d7bdc48dcfded9b9be1df4299db544a2365f8
+//Operates keyUpHandler when button is pressed    
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        pressRight = false;
+    }
+    else if(e.keyCode == 37) {
+        pressLeft = false;
+    }
+}
+
+//drawBall function
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+    
+//drawPaddle function    
+function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height-heightOfPaddle, widthOfPaddle, heightOfPaddle);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
-    }   
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //Clears canvas after update
+    drawBall(); //Calling the draw ball function
+    drawPaddle(); //Calling the draw paddle function
     
-    //This is the draw function drawing the ball and the paddle
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); //This clears the canvas
-        drawBall();
-        drawPaddle();
     
-        
-   //Here I am trying to get the ball to hit off the walls of the canvas
-   if(x + a < 0) {
-       a = -a;
-    }
-    else if(x + dy > canvas.width - radiusOfBall) {
+    if(x + a > canvas.width-radiusOfBall || x + a < radiusOfBall) {
         a = -a;
     }
-        
-    if(y + b < 0) {
+    if(y + b < radiusOfBall) {
         b = -b;
+    } 
+    else if(y + b > canvas.height-radiusOfBall) {
+    if(x > paddleX && x < paddleX + widthOfPaddle){
+            b = -b;
+        }
+    else
+        {
+        alert("HARD LUCK, GAME OVER!");
+        document.location.reload();
     }
-    else if(y + dy > canvas.height - radiusOfBall) {
-        b = -b;
-    }   
-        
-        x += a; //This places the ball in a new position every time the game updates
-        y += b;
     }
-    
-<<<<<<< HEAD
-    
-    setInterval(draw, 10); //Ball moving at 10 milliseconds
 
-=======
-    //Using 'stroke' instead of 'fill' to show the outer stroke of the blocks 
-    //Path of ball
-    ctx.beginPath();
-    ctx.rect(100, 10, 100, 40);
-    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    ctx.stroke();
-    ctx.closePath();
     
->>>>>>> a54d7bdc48dcfded9b9be1df4299db544a2365f8
-</script>
+    if(pressRight && paddleX < canvas.width-widthOfPaddle) {
+        paddleX += 10; //Moving 10 to the right when the right arrow is pressed
+    }
+    else if(pressLeft && paddleX > 0) {
+        paddleX -= 10; //Moving 10 to the left when the left arrow is pressed
+    }
+    
+    x += a; //This places the ball in a new position every time the game updates
+    y += b; //This places the ball in a new position every time the game updates
+}
+
+setInterval(draw, 10); //Ball moving at 10 milliseconds
+    
+    </script>
 
 </body>
 </html>
