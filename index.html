@@ -2,15 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Canvas</title>
+    <title>Brick Destroyer</title>
     <style type="text/css">
-    	* { padding: 0; margin: 0; }
+    	 { padding: 2; margin: 2; }
     	canvas { background: #FF0000; display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
     
-<canvas id="myCanvas" width="1000" height="400"></canvas>
+<canvas id="myCanvas" width="1200" height="600" style="background: url('space.jpg')"></canvas>
 
 <script>
     
@@ -20,22 +20,75 @@ var ctx = canvas.getContext("2d");
 
 //Variables
 var radiusOfBall = 11; //Radius of ball
+
 var x = canvas.width/2; //Defining x position
 var y = canvas.height-30; //Defining y position
-var a = 3; //var a and var b are used to show the ball is moving
-var b = -3;
+
+var a = 4; //var a and var b are used to show the ball is moving
+var b = -4;
 var heightOfPaddle = 10; //Setting height of paddle
-var widthOfPaddle = 120; //Setting width of paddle
+var widthOfPaddle = 150; //Setting width of paddle
 var paddleX = (canvas.width-widthOfPaddle)/2; //Making sure paddle starts in middle
 var pressRight = false; //Left keyboard button initialized
 var pressLeft = false; //Right keyboard button initialized
-//var pressUp = false;
-//var pressDown = false;
+
+//Variables of bricks   
+var rowsOfBricks = 8; //Rows down of bricks
+var bricksAcross = 17; //Rows across of bricks
+var widthofBricks = 50; //Width of bricks
+var heightOfBricks = 15; //Height of bricks
+var brickPadding = 15; //Padding of bricks
+var offsetTop = 50; //Set from top
+var offsetLeft = 50; //Set in from left
+    
+var score = 0; //Setting score to 0
+
+
+//Brick array
+    var bricks = [];
+	//For loop for bricks across the top
+	for(i=0; i<bricksAcross; i++) {
+    bricks[i] = [];
+	//For loop for rows of bricks
+    for(j=0; j<rowsOfBricks; j++) {
+        bricks[i][j] = { x: 0, y: 0, status: 1 };
+    }
+}
 
 //Event listeners set up to listen for key presses
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
- //   document.addEventListener("keypress", keypressHandler, false);
+
+//Tried to get up and down function working but couldnt
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        pressRight = true;
+	     pressLeft = false;
+	     pressDown = false;
+	     pressUp = false;
+    }
+    else if(e.keyCode == 37) {
+       pressRight = false;
+	     pressLeft = true;
+	     pressDown = false;
+	     pressUp = false;
+    }
+	else if (e.keyCode == 40 )//down
+	  {
+		pressRight = false;
+	     pressLeft = false;
+	     pressDown = true;
+	     pressUp = false;
+	  }
+       else if (e.keyCode == 38 )//up
+	  {
+		 pressRight = false;
+	     pressLeft = false;
+	     pressDown = false;
+	     pressUp = true;
+	  }
+}    
+    
     
     
 //Operates keyDownHandler when button is pressed
@@ -48,14 +101,6 @@ function keyDownHandler(e) {
     }
 }
     
-  //  function keyDownHandler(e) {
- //   if(e.keyCode == 38) {
-   //     pressUp = true;
-   // }
-  //  else if(e.keyCode == 40) {
-  //      pressDown = true;
-  //  }
-//}
     
 //Operates keyUpHandler when button is pressed    
 function keyUpHandler(e) {
@@ -71,7 +116,7 @@ function keyUpHandler(e) {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#EBAD5C";
     ctx.fill();
     ctx.closePath();
 }
@@ -80,17 +125,63 @@ function drawBall() {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height-heightOfPaddle, widthOfPaddle, heightOfPaddle);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#FF0000";
     ctx.fill();
     ctx.closePath();
 }
 
+//Draw bricks function    
+function drawBricks() {
+    for(i=0; i<bricksAcross; i++) {
+        for(j=0; j<rowsOfBricks; j++) {
+            if(bricks[i][j].status ==1){
+            var brickX = (i*(widthofBricks+brickPadding))+offsetLeft;
+            var brickY = (j*(heightOfBricks+brickPadding))+offsetTop;
+            bricks[i][j].x = brickX;
+            bricks[i][j].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, widthofBricks, heightOfBricks);
+            ctx.fillStyle = "#8A2BE2";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
+    }
+
+//Collision detection function to hit bricks    
+function collisionDetection() {
+    for(i=0; i<bricksAcross; i++) {
+        for(j=0; j<rowsOfBricks; j++) {
+            var brick = bricks[i][j];
+            if(brick.status == 1){
+            if(x > brick.x && x < brick.x+widthofBricks && y > brick.y && y < brick.y+heightOfBricks) {
+                b = -b;
+                brick.status = 0;
+                score++;
+                }
+            }
+        }
+    }
+}
+
+    //Draw score function
+function showScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#FF0000";
+    ctx.fillText("Score: "+score, 8, 20);
+}
+
+//Draw function that draws objects
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); //Clears canvas after update
     drawBall(); //Calling the draw ball function
     drawPaddle(); //Calling the draw paddle function
+    collisionDetection(); //Calling the collision detection method
+    drawBricks(); //Calling the draw bricks method
+    showScore();
     
-    
+//
     if(x + a > canvas.width-radiusOfBall || x + a < radiusOfBall) {
         a = -a;
     }
@@ -103,17 +194,17 @@ function draw() {
         }
     else
         {
-        alert("HARD LUCK, GAME OVER!");
-        document.location.reload();
+        alert("HARD LUCK, GAME OVER!"); //Pop up box if ball goes beneath the paddle
+        document.location.reload(); //Reloads game
     }
     }
 
     
     if(pressRight && paddleX < canvas.width-widthOfPaddle) {
-        paddleX += 10; //Moving 10 to the right when the right arrow is pressed
+        paddleX += 9; //Moving 9 to the right when the right arrow is pressed
     }
     else if(pressLeft && paddleX > 0) {
-        paddleX -= 10; //Moving 10 to the left when the left arrow is pressed
+        paddleX -= 9; //Moving 9 to the left when the left arrow is pressed
     }
     
     x += a; //This places the ball in a new position every time the game updates
