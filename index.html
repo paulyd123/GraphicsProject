@@ -13,6 +13,13 @@
 <canvas id="myCanvas" width="1200" height="600" style="background: url('space.jpg')"></canvas>
 
 <script>
+<<<<<<< HEAD
+=======
+
+	//This stores a reference to the canvas element and to the canvas variable
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+>>>>>>> a8f81f59a0d00cdd79a25b37a7db16ad3bc90665
     
 //This stores a reference to the canvas element and to the canvas variable
 var canvas = document.getElementById("myCanvas");
@@ -89,8 +96,15 @@ function keyDownHandler(e) {
 	  }
 }    
     
+<<<<<<< HEAD
+=======
+    //Draw ball function
+    function drawBall() {
+
+>>>>>>> a8f81f59a0d00cdd79a25b37a7db16ad3bc90665
     
     
+<<<<<<< HEAD
 //Operates keyDownHandler when button is pressed
 function keyDownHandler(e) {
     if(e.keyCode == 39) {
@@ -114,6 +128,26 @@ function keyUpHandler(e) {
 
 //drawBall function
 function drawBall() {
+=======
+    //This function prints out the square on the canvas
+    function draw() {
+
+        ctx.beginPath();
+        ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    
+    //Function drawing the paddle
+    function drawPaddle() {
+
+    setInterval(draw, 10); //Ball moving at 10 milliseconds
+    
+    //ball
+
+>>>>>>> a8f81f59a0d00cdd79a25b37a7db16ad3bc90665
     ctx.beginPath();
     ctx.arc(x, y, radiusOfBall, 0, Math.PI*2);
     ctx.fillStyle = "#EBAD5C";
@@ -200,20 +234,38 @@ function draw() {
     }
 
     
+<<<<<<< HEAD
     if(pressRight && paddleX < canvas.width-widthOfPaddle) {
         paddleX += 9; //Moving 9 to the right when the right arrow is pressed
     }
     else if(pressLeft && paddleX > 0) {
         paddleX -= 9; //Moving 9 to the left when the left arrow is pressed
     }
+=======
+
+>>>>>>> a8f81f59a0d00cdd79a25b37a7db16ad3bc90665
     
     x += a; //This places the ball in a new position every time the game updates
     y += b; //This places the ball in a new position every time the game updates
 }
 
+<<<<<<< HEAD
 setInterval(draw, 10); //Ball moving at 10 milliseconds
     
     </script>
+=======
+
+    //Using 'stroke' instead of 'fill' to show the outer stroke of the blocks 
+    //Path of ball
+    ctx.beginPath();
+    ctx.rect(100, 10, 100, 40);
+    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
+    ctx.stroke();
+    ctx.closePath();
+    
+
+</script>
+>>>>>>> a8f81f59a0d00cdd79a25b37a7db16ad3bc90665
 
 </body>
 </html>
